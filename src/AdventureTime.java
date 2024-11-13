@@ -9,56 +9,116 @@ public class AdventureTime {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
+        int challengeOneAnswer = challengeOne("inputOneTwo.txt");
+        int challengeTwoAnswer = challengeTwo("inputOneTwo.txt");
+        int challengeThreeAnswer = challengeThree("inputThreeFour.txt");
+        int challengeFourAnswer = challengeFour("inputThreeFour.txt");
 
-
+        writeFileAllAnswers("AdventureTime.txt", challengeOneAnswer, challengeTwoAnswer, challengeThreeAnswer, challengeFourAnswer);
     }
 
-    /** TODO 1
-     *
-     * Challenge 1
+    /** Challenge 1
      *
      * @param fileName
      * @return Answer to Challenge 1
      * @throws IOException
      */
     public static int challengeOne(String fileName) throws IOException {
-        return 0;
+        int[] data = readFile(fileName);
+        int numberOfIncrease = 0;
+        for (int i = 1; i < data.length; i++) {
+            if (data[i] > data[i - 1]) {
+                numberOfIncrease++;
+            }
+        }
+        return numberOfIncrease;
     }
 
-    /** TODO 2
-     *
-     * Challenge 2
+    /** Challenge 2
      *
      * @param fileName
      * @return Answer to Challenge 2
      * @throws FileNotFoundException
      */
     public static int challengeTwo(String fileName) throws FileNotFoundException {
-        return 0;
+        int[] data = readFile(fileName);
+        int numberOfIncrease = 0;
+        for (int i = 3; i < data.length; i++) {
+            int previousSum = data[i - 3] + data[i - 2] + data[i - 1];
+            int currentSum = data[i - 2] + data[i - 1] + data[i];
+            if (currentSum > previousSum) {
+                numberOfIncrease++;
+            }
+        }
+        return numberOfIncrease;
     }
 
-    /** TODO 3
-     *
-     * Challenge 3
+    /** Challenge 3
      *
      * @param fileName
      * @return Answer to Challenge 3
      * @throws FileNotFoundException
      */
     public static int challengeThree(String fileName) throws FileNotFoundException {
-        return 0;
+        File file = new File(fileName);
+        Scanner scanner = new Scanner(file);
+        int horizontalPosition = 0;
+        int depth = 0;
+
+        while (scanner.hasNextLine()) {
+            String[] command = scanner.nextLine().split(" ");
+            String direction = command[0];
+            int value = Integer.parseInt(command[1]);
+
+            switch (direction) {
+                case "forward":
+                    horizontalPosition += value;
+                    break;
+                case "down":
+                    depth += value;
+                    break;
+                case "up":
+                    depth -= value;
+                    break;
+            }
+        }
+        scanner.close();
+        return horizontalPosition * depth;
     }
 
-    /** TODO 4
-     *
-     * Challenge 4
+    /** Challenge 4
      *
      * @param filename
      * @return Answer to Challenge 4
      * @throws FileNotFoundException
      */
     public static int challengeFour(String filename) throws FileNotFoundException {
-        return 0;
+        File file = new File(filename);
+        Scanner scanner = new Scanner(file);
+        int horizontalPosition = 0;
+        int depth = 0;
+        int aim = 0;
+
+        while (scanner.hasNextLine()) {
+            String[] command = scanner.nextLine().split(" ");
+            String direction = command[0];
+            int value = Integer.parseInt(command[1]);
+
+            switch (direction) {
+                case "forward":
+                    horizontalPosition += value;
+                    depth += aim * value;
+                    break;
+                case "down":
+                    aim += value;
+                    break;
+                case "up":
+                    aim -= value;
+                    break;
+            }
+        }
+        scanner.close();
+        return horizontalPosition * depth;
     }
 
     /** This method will write the values passed as challengeOne, challengeTwo, challengeThree, and challengeFour to a text file.
@@ -104,5 +164,4 @@ public class AdventureTime {
         scanner.close();
         return lineCount;
     }
-
 }
